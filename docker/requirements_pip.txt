@@ -1,0 +1,46 @@
+# wordbatch
+
+#misc
+kaggle
+GPUtil
+
+# sklearn
+gplearn
+metric-learn
+
+#
+optuna
+
+#
+transformers
+
+dask
+# distributed
+
+# nlp
+spacy
+thinc
+
+# sklearn, ml
+scikit-learn
+xgboost
+numpy
+scipy
+pandas
+six
+tables
+numba
+pyarrow
+
+# sklearn,
+imbalanced-learn
+boruta
+scikit-optimize
+hyperopt
+shap
+lightgbm
+catboost
+
+#misc
+hiredis
+
