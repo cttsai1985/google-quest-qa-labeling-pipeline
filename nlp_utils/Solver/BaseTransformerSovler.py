@@ -94,7 +94,8 @@ class MixinTransformerSolver(ISolver):
         # analysis by groups
         groupby_obj = train_groups.reindex(index=self.trues_valid.index).groupby("category")
         group_valid_score = groupby_obj.apply(lambda x: self.score_func(
-            self.trues_valid.reindex(index=x.index).values, self.preds_valid.reindex(index=x.index).values)).to_frame()
+            self.trues_valid.reindex(index=x.index).values, self.preds_valid.reindex(
+                index=x.index).values)).to_frame("score")
         print(f"group valid score: \n{group_valid_score}\n")
         group_valid_score.index = group_valid_score.index.tolist()  # categorical index casting to normal str
 
