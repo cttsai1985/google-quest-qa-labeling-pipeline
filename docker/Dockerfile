@@ -39,9 +39,10 @@ RUN bash /tmp/clean-layer.sh
 ########### General
 EXPOSE 6006 8888
 
-VOLUME ["/data"]
 VOLUME ["/log"]
-VOLUME ["/src"]
+VOLUME ["/root/src"]
+VOLUME ["/root/src/input"]
+VOLUME ["/root/src/script"]
 
 # COPY jupyter_notebook_config.py /root/.jupyter/
 
