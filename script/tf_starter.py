@@ -272,8 +272,8 @@ def main():
         solver = solver_gen(
             fine_tuned_dir=WORKING_DIR, cv_splitter=splitter, score_func=spearmanr_ignore_nan,
             encode_func=batch_encode_sequence, configs=configs)
+        solver.run(data, fit_params=fit_params, inference_only=args.inference_only)
 
-    solver.run(data, fit_params=fit_params, inference_only=args.inference_only)
     test_result = solver.test_prediction_
     make_submission(test_result, data_dir=args.data_dir, index_name=INDEX_NAME)
     return
