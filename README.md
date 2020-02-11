@@ -2,7 +2,7 @@
 
 This is a Kaggle competition to improving automated understanding of complex question answer content. The task is to predict 30 indices of each question and answer pair that that human labeled. It closed at early February 2020. More info: https://www.kaggle.com/c/google-quest-challenge
 
-The approach for this competition is to utilizing large transformers and transfer them to learn to predict this task. The main pipeline is build on hugging-face transformers and keras/tensorflow. Transformers from hugging-face is a well constructed library is the popular and plain way to apply language model on various tasks. 
+My proposed approach for this competition is to utilizing large transformers and transfer them to learn to predict this task. The main pipeline is build on hugging-face transformers and keras/tensorflow. Transformers from hugging-face is a well constructed library is the popular and plain way to apply language model on various tasks. 
 
 
 ### Requirement
