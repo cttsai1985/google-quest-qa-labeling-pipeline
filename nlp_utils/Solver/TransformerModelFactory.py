@@ -118,6 +118,50 @@ def shallow_wave_net_alike_arch(
     return x
 
 
+def shallow_res_net_alike_arch(
+        input_data, filters: int = 32, kernel_size: int = 3, strides: int = 1, data_format='channels_first'):
+    pool_size: int = 8
+
+    # block d1
+    x = _res_net_block(
+        input_data, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=2, data_format=data_format)
+    d1 = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=1, data_format=data_format)
+    d1 = tf.keras.layers.MaxPooling1D(pool_size)(d1)
+
+    # block d2
+    x = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=2, data_format=data_format)
+    d2 = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=1, data_format=data_format)
+    d2 = tf.keras.layers.MaxPooling1D(pool_size)(d2)
+
+    # hidden
+    x = tf.keras.layers.Add()([d1, d2])
+    x = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=2, data_format=data_format)
+    x = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=1, data_format=data_format)
+
+    x = tf.keras.layers.GlobalAveragePooling1D()(x)
+    return x
+
+
+def dense_block(
+        input_data, filters: int = 32, kernel_size: int = 3, strides: int = 1, data_format='channels_first'):
+    pool_size: int = 8
+
+    x = _res_net_block(
+        input_data, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=4, data_format=data_format)
+    x = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=2, data_format=data_format)
+    x = _res_net_block(
+        x, filters=filters, kernel_size=kernel_size, strides=strides, dilation_rate=1, data_format=data_format)
+    x = tf.keras.layers.MaxPooling1D(pool_size)(x)
+    x = tf.keras.layers.GlobalAveragePooling1D()(x)
+    return x
+
+
 def create_model_from_pretrained(
         model, max_seq_length_question: int, max_seq_length_answer: int, output_size: int = 30,
         is_distilled: bool = False):
@@ -135,7 +179,7 @@ def create_model_from_pretrained(
         a_input_ids, a_attention_mask, a_token_type_ids = a_inputs
         inputs = [q_input_ids, q_attention_mask, q_token_type_ids, a_input_ids, a_attention_mask, a_token_type_ids]
 
-    embed_process = shallow_wave_net_alike_arch
+    embed_process = dense_block  # make it a bit complex than GlobalAveragePooling1D
     q_embed = embed_process(q_embed)
     a_embed = embed_process(a_embed)
 

@@ -105,6 +105,8 @@ class MixinTransformerSolver(ISolver):
                 group_valid_score.rename("overall"), valid_score_question, valid_score_answer], axis=1)
             print(f"group valid score: \n{group_valid_score}\n")
 
+        group_valid_score.index = group_valid_score.index.tolist()  # categorical index casting to normal str
+
         stats_dict = {
             'test_preds': self.preds_test,
             'valid_preds': self.preds_valid,

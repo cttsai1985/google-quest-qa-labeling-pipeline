@@ -34,6 +34,7 @@ class BaselineTransformerTFSolver(BaseTransformerTFSolver):
 
         self.cv_splitter = cv_splitter
         self.loss_direction: str = configs.get("loss_direction", 'auto')
+        self.split_index = configs.get("cv_splitter", dict()).get("split_index", "category")
         self.eval_metric = 'val_loss'
 
     def _model_fit(self, data, train_idx, model, validation_data, fit_params):
@@ -76,10 +77,12 @@ class BaselineTransformerTFSolver(BaseTransformerTFSolver):
         train_y = data.get('train_y', None)
         train_groups = data.get('train_groups', None)
 
+        print(f"data split by {self.split_index}: ")
+        data_split = train_groups[self.split_index]
         # TODO: adding HPO in the future
         # FIXME: for now it only runs single model not cv models
         for fold, (train_idx, valid_idx) in enumerate(self.cv_splitter.split(
-                X=train_y, y=train_groups['category'].cat.codes, groups=None), start=1):
+                X=data_split, y=data_split, groups=data_split), start=1):
             self.tokenizer, model = self._pipeline_factory(
                 load_model_from_fine_tuned=False, output_size=len(self.target_columns))
 
