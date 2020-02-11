@@ -94,17 +94,8 @@ class MixinTransformerSolver(ISolver):
         # analysis by groups
         groupby_obj = train_groups.reindex(index=self.trues_valid.index).groupby("category")
         group_valid_score = groupby_obj.apply(lambda x: self.score_func(
-            self.trues_valid.reindex(index=x.index).values, self.preds_valid.reindex(index=x.index).values))
-
-        if output_categories_question is not None and output_categories_answer is not None:
-            valid_score_question = groupby_obj.apply(lambda x: self.score_func(
-                y_valid_q.reindex(index=x.index).values, y_valid_a.reindex(index=x.index).values)).rename("question")
-            valid_score_answer = groupby_obj.apply(lambda x: self.score_func(
-                y_valid_a.reindex(index=x.index).values, p_valid_a.reindex(index=x.index).values)).rename("answer")
-            group_valid_score = pd.concat([
-                group_valid_score.rename("overall"), valid_score_question, valid_score_answer], axis=1)
-            print(f"group valid score: \n{group_valid_score}\n")
-
+            self.trues_valid.reindex(index=x.index).values, self.preds_valid.reindex(index=x.index).values)).to_frame()
+        print(f"group valid score: \n{group_valid_score}\n")
         group_valid_score.index = group_valid_score.index.tolist()  # categorical index casting to normal str
 
         stats_dict = {
