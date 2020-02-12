@@ -1,13 +1,13 @@
-### google-quest-qa-labeling-pipeline
+### About google-quest-qa-labeling-pipeline
 
-This is a Kaggle competition to improving automated understanding of complex question answer content. The task is to predict 30 indices of each question and answer pair that that human labeled. It closed at early February 2020. More info: https://www.kaggle.com/c/google-quest-challenge
+This is a Kaggle competition aims to improving automated understanding of complex question answer content. The task is to predict 30 indices of each question and answer pair which labeled by human. It closed at early February 2020. More info: https://www.kaggle.com/c/google-quest-challenge
 
-My proposed approach for this competition is to utilizing large transformers and transfer them to learn to predict this task. The main pipeline is build on transformers and keras/tensorflow. Transformers (https://github.com/huggingface/transformers) by hugging-face is a ready-to-use library for employing popular transformer model weights. It is a very straightforward way to apply language models for various tasks in a very short period of time.
+My proposed approach for this competition is to utilizing large transformers and transfer them to learn to predict this task. The main pipeline is build on transformers and keras/tensorflow. Transformers (https://github.com/huggingface/transformers) by hugging-face is a ready-to-use library for employing popular transformer model weights. It is a very straightforward way to apply language models for various tasks in a very short period of time. Keras/Tensorflow is the deep learning framework to build the pipeline.
 
 
 ### Requirement
 
-An Unix environment with modern GPU computing capacity for Docker (Tested on Ubuntu 18).
+The pipeline runs inside docker container. An Unix environment with modern GPU computing capacity for Docker (Tested on Ubuntu 18).
 
 
 ### Project structure
@@ -18,23 +18,23 @@ An Unix environment with modern GPU computing capacity for Docker (Tested on Ubu
 
 `notebook`: notebooks for visualization.
 
-`docker`: Dockerfile and requirement.txt for build computing environment.
+`docker`: Dockerfile and requirement.txt for building computing environment.
 
 `configs`: store handful preset configs to training models.
 
-`input`: store data set and models to order to compliance with kaggle environment.
+`input`: store data set and models. This arrangement make it easier to port to the environment on kaggle server.
 
 
 ### Reproduce the results
 
 ##### step 1) build the using docker image for modeling
 
-run `bash 00_init_build_docker.sh`. This will pull a tensorflow docker image with GPU
+run `bash 00_init_build_docker.sh`. This will pull a tensorflow docker image with GPU computing capacity and install necessary packages defined in `requirements.txt`.
 
 
 ##### step 2) get the competition data
 
-run `bash 01_download_data.sh` to get the competition data set `google-quest-challenge.zip` and it will decompress the downloaded zip file into `train.csv`, `test.csv` and `sample_submission.csv`.
+run `bash 01_download_data.sh` to get the competition data set `google-quest-challenge.zip`. It will decompress the downloaded zip file into `train.csv`, `test.csv` and `sample_submission.csv`.
 
 Note this step needs kaggle api installed, please visit https://github.com/Kaggle/kaggle-api and have api key setup. 
 
@@ -57,7 +57,7 @@ run `04_run_training_distill_roberta.sh` to run distilled roberta with preset.
 
 run `04_run_training_distill_roberta_aug.sh` to distilled roberta with preset and training with augmentation.
 
-This run `tf_starter.py` and the pipeline is flexible to switch among difference embedding supported by transformer models from hugging face.
+This run `tf_starter.py` and the pipeline is flexible to switch among difference embedding supported by transformer models provided by hugging face.
 
 
 ##### step 6) inference only
